@@ -1,11 +1,12 @@
 {
-  "name": "bagel-tests",
+  "name": "bobs-bagels-pair-programming-hugh-remel",
   "version": "1.0.0",
   "description": "",
-  "main": "basket.js",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "run": "node src/index.js",
+    "test": "node tests/testRunner.js"
   },
   "keywords": [],
   "author": "",
