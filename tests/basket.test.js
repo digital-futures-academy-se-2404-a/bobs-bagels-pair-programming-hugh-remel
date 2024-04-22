@@ -1,15 +1,12 @@
-import basket from '../src/basket.js'
+import Basket from '../src/basket.js'
 import { assertEqual } from './testing-framework.js';
-
+import Item from '../src/item.js'
 
 const cleanUp = () => {
-    item = undefined;
     expected = undefined;
     actual = undefined;
     result = undefined;
-    basket.items = [];
 }
-
 
 //User Story 1
 console.log('Test 1');
@@ -18,13 +15,14 @@ console.log("Add item to basket using addItem increases length by 1.");
 console.log("==================");
 
 //Arrange
-let item = {};
-let expected = basket.items.length + 1;
+const item1 = new Item;
+const basket1 = new Basket;
+let expected = basket1.getItems().length + 1;
 let actual, result;
 
 //Act
-basket.addItem(item);
-actual = basket.items.length;
+basket1.addItem(item1);
+actual = basket1.getItems().length;
 
 //Assert
 result = assertEqual(actual, expected);
@@ -44,11 +42,12 @@ console.log("==================");
 
 // Arrange
 expected = true;
-item = {};
+const item2 = new Item;
+const basket2 = new Basket;
 
 // Act
-basket.addItem(item);
-actual = basket.items.includes(item);
+basket2.addItem(item2);
+actual = basket2.getItems().includes(item2);
 
 // Assert
 result = assertEqual(actual, expected);
@@ -67,13 +66,15 @@ console.log("You are able to add items to a basket with existing items");
 console.log("==================");
 
 //Arrange
-let item1 = {};
-let item2 = {};
-expected = basket.items.length + 2;
+const item3a = new Item;
+const item3b = new Item;
+
+const basket3 = new Basket;
+expected = basket3.getItems().length + 2;
 //Act
-basket.addItem(item1);
-basket.addItem(item2);
-actual = basket.items.length;
+basket3.addItem(item3a);
+basket3.addItem(item3b);
+actual = basket3.getItems().length;
 
 //Assert
 result = assertEqual(actual, expected);
@@ -93,12 +94,13 @@ console.log("You cant add an item with 'Null' value to the basket");
 console.log("==================");
 
 //Arrange
-item = null;
-expected = basket.items.length;
+const item4 = new Item(null)
+const basket4 = new Basket;
+expected = basket4.getItems().length;
 
 //Act
-basket.addItem(item);
-actual = basket.items.length;
+basket4.addItem(item4);
+actual = basket4.getItems().length;
 
 //Assert
 result = assertEqual(actual, expected);
@@ -118,13 +120,14 @@ console.log("You can remove an item from the basket");
 console.log("==================");
 
 //Arrange
-basket.items = ['Bagel'];
-item = 'Bagel';
-expected = basket.items.length - 1;
+const basket5 = new Basket;
+const item5 = new Item;
+basket5.addItem(item5);
+expected = basket5.getItems().length - 1;
 
 //Act
-basket.removeItem(item);
-actual = basket.items.length;
+basket5.removeItem(item5);
+actual = basket5.getItems().length;
 
 //Assert
 result = assertEqual(actual, expected);
@@ -146,13 +149,18 @@ console.log("The item that is removed form the basket is the item passed into re
 console.log("==================");
 
 //Arrange
-basket.items = ["Bagel", "Chicken"];
-item = "Bagel";
+const basket6 = new Basket;
+
+const item6a = new Item('Chicken');
+const item6b = new Item;
+basket6.addItem(item6a);
+basket6.addItem(item6b);
+
 expected = false;
 
 //Act
-basket.removeItem(item);
-actual = basket.items.includes(item);
+basket6.removeItem(item6b);
+actual = basket6.getItems().includes(item6b);
 
 //Assert
 result = assertEqual(actual, expected);
@@ -172,11 +180,15 @@ console.log("You can check if the basket is full");
 console.log("==================");
 
 //Arrange
-basket.items = [1, 2, 3, 4, 5];
+const basket7 = new Basket(2);
+const item7a = new Item("1");
+const item7b = new Item('2');
+basket7.addItem(item7a);
+basket7.addItem(item7b);
 expected = true;
 
 //Act
-actual = basket.isFull();
+actual = basket7.isFull();
 
 //Assert
 result = assertEqual(actual, expected);
@@ -195,13 +207,18 @@ console.log("You cannot add another item if the basket is full");
 console.log("==================");
 
 //Arrange
-basket.items = [1, 2, 3, 4, 5];
-item = 'Bagel';
+const basket8 = new Basket(2);
+const item8a = new Item("1");
+const item8b = new Item("2");
+const item8c = new Item('Nugget')
+
+basket8.addItem(item8a);
+basket8.addItem(item8b);
 expected = false;
 
 //Act
-basket.addItem(item);
-actual = basket.items.includes(item);
+basket8.addItem(item8c);
+actual = basket8.getItems().includes(item8c);
 
 //Assert
 result = assertEqual(actual, expected);
@@ -223,12 +240,13 @@ console.log("You can increase the capacity of the basket");
 console.log("==================");
 
 //Arrange
+const basket9 = new Basket;
 let capacityIncrease = 3
-expected = basket.capacity + capacityIncrease;
+expected = basket9.getCapacity() + capacityIncrease;
 
 //Act
-basket.setCapacity(basket.capacity + capacityIncrease);
-actual = basket.capacity;
+basket9.setCapacity(basket9.getCapacity() + capacityIncrease);
+actual = basket9.getCapacity();
 
 //Assert
 result = assertEqual(actual, expected);
@@ -248,11 +266,12 @@ console.log("==================");
 
 //Arrange
 let capacityDecrease = 3
-expected = basket.capacity - capacityDecrease;
+const basket10 = new Basket;
+expected = basket10.getCapacity() - capacityDecrease;
 
 //Act
-basket.setCapacity(basket.capacity - capacityDecrease);
-actual = basket.capacity;
+basket10.setCapacity(basket10.getCapacity() - capacityDecrease);
+actual = basket10.getCapacity();
 
 //Assert
 result = assertEqual(actual, expected);
@@ -271,13 +290,14 @@ console.log("You cannot decrease the capacity bellow 1");
 console.log("==================");
 
 //Arrange
-basket.setCapacity(1);
+const basket11 = new Basket;
+basket11.setCapacity(1);
 capacityDecrease = 1;
-expected = basket.capacity;
+expected = basket11.getCapacity();
 
 //Act
-basket.setCapacity(basket.capacity - capacityDecrease);
-actual = basket.capacity;
+basket11.setCapacity(basket11.getCapacity() - capacityDecrease);
+actual = basket11.getCapacity();
 
 //Assert
 result = assertEqual(actual, expected);
